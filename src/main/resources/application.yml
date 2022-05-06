@@ -23,6 +23,7 @@ mybatis-plus:
 reggie:
   file-path: /Users/xushengjie/Documents/project_file/
 
+
 tencent:
   cloud:
     sdkAppId: yourSdkAppId

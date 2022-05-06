@@ -53,6 +53,7 @@
             <version>5.8.0.M3</version>
         </dependency>
 
+        <!--腾讯云 -->
         <dependency>
             <groupId>com.tencentcloudapi</groupId>
             <artifactId>tencentcloud-sdk-java</artifactId>
@@ -80,6 +81,7 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
+
         </dependency>
         <dependency>
             <groupId>junit</groupId>
