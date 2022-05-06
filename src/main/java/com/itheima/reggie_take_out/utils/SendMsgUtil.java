@@ -24,9 +24,9 @@ import com.tencentcloudapi.sms.v20210111.models.SendSmsResponse;
  */
 public class SendMsgUtil {
 
-	static final String SECRET_ID = "AKIDFLCoDOL3WllW2IJ4arsebJm0ziEWZNvE";
+	static final String SECRET_ID = "111";
 
-	static final String SECRET_KEY = "6wWt48yZu0qQmvoRo11oMfjY7VgfRzIM";
+	static final String SECRET_KEY = "11";
 
 	public static void sendMsg(String phoneNumber, String code, String sdkAppId, String signName, String templateId) {
 		try {
