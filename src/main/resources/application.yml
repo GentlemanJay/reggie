@@ -25,6 +25,6 @@ reggie:
 
 tencent:
   cloud:
-    sdkAppId: yourSdkAppId
-    signName: yourSignName
-    templateId: yourTemplateId
+    sdkAppId: 1400674205
+    signName: 枫夜俊一公众号
+    templateId: 1392651
