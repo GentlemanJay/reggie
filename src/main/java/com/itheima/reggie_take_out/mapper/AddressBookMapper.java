@@ -1,0 +1,14 @@
+package com.itheima.reggie_take_out.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.itheima.reggie_take_out.entity.AddressBook;
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+* @Entity com.itheima.reggie_take_out.entity.AddressBook
+*/
+@Mapper
+public interface AddressBookMapper extends BaseMapper<AddressBook> {
+
+
+}
