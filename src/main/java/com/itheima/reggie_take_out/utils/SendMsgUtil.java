@@ -26,7 +26,7 @@ public class SendMsgUtil {
 
 	static final String SECRET_ID = "111";
 
-	static final String SECRET_KEY = "11";
+	static final String SECRET_KEY = "222";
 
 	public static void sendMsg(String phoneNumber, String code, String sdkAppId, String signName, String templateId) {
 		try {

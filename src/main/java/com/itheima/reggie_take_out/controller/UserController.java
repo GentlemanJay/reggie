@@ -57,7 +57,7 @@ public class UserController {
 			log.info("===code: " + code);
 
 			//3.调用腾讯云短信SMS服务
-			SendMsgUtil.sendMsg(phone, code, tcp.getSdkAppId(), tcp.getSignName(), tcp.getTemplateId());
+//			SendMsgUtil.sendMsg(phone, code, tcp.getSdkAppId(), tcp.getSignName(), tcp.getTemplateId());
 
 			//4.将生成的验证码保存到session中，用于与前端输入的验证码进行比对
 			session.setAttribute(phone, code);
