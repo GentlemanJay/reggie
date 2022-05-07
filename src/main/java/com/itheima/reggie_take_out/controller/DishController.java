@@ -189,7 +189,7 @@ public class DishController {
 	 * @return
 	 */
 	@PostMapping("/status/0")
-	public R<String> soldDishByIds(@RequestParam("ids") Long[] ids) {
+	public R<String> soldDishByIds(@RequestParam("ids") List<Long> ids) {
 
 		List<Dish> list = new ArrayList<>();
 		for (Long id : ids) {
@@ -199,6 +199,17 @@ public class DishController {
 		}
 
 		dishService.updateBatchById(list);
+
+
+		//根据任意id获取菜品实体
+		Dish dish = dishService.getById(ids.get(0));
+
+		if (dish != null) {
+			//删除缓存
+			String key = "dish:" + dish.getCategoryId() + ":" + dish.getStatus();
+			redisTemplate.delete(key);
+			log.info("=====update cache");
+		}
 
 		return R.success(DishEnum.UPDATE_SUCCESS.getMsg());
 	}
@@ -211,7 +222,7 @@ public class DishController {
 	 * @return
 	 */
 	@PostMapping("/status/1")
-	public R<String> resellDishByIds(@RequestParam("ids") Long[] ids) {
+	public R<String> resellDishByIds(@RequestParam("ids") List<Long> ids) {
 
 		List<Dish> list = new ArrayList<>();
 		for (Long id : ids) {
@@ -221,6 +232,16 @@ public class DishController {
 		}
 
 		dishService.updateBatchById(list);
+
+		//根据任意id获取菜品实体
+		Dish dish = dishService.getById(ids.get(0));
+
+		if (dish != null) {
+			//删除缓存
+			String key = "dish:" + dish.getCategoryId() + ":" + dish.getStatus();
+			redisTemplate.delete(key);
+			log.info("=====update cache");
+		}
 
 		return R.success(DishEnum.UPDATE_SUCCESS.getMsg());
 	}
