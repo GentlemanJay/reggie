@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +51,7 @@ public class SetmealController {
 	 * @return
 	 */
 	@PostMapping
+	@CacheEvict(value = "setmealCache", allEntries = true)
 	public R<String> saveSetmealInfo(@RequestBody SetmealDTO setmealDTO) {
 		setmealService.saveSetmealWithDishes(setmealDTO);
 		return R.success(SetmealEnum.SAVE_SUCCESS.getMsg());
@@ -139,6 +142,7 @@ public class SetmealController {
 	 */
 	@PutMapping
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	@CacheEvict(value = "setmealCache", key = "#setmealDTO.categoryId + '_' + #setmealDTO.status")
 	public R<String> updateSetmealInfo(@RequestBody SetmealDTO setmealDTO) {
 
 		if (setmealDTO == null) {
@@ -179,6 +183,7 @@ public class SetmealController {
 	 * @return
 	 */
 	@PostMapping("/status/0")
+	@CacheEvict(value = "setmealCache", allEntries = true)
 	public R<String> soldSetmealByIds(@RequestParam("ids") Long[] ids) {
 
 		List<Setmeal> list = new ArrayList<>();
@@ -201,6 +206,7 @@ public class SetmealController {
 	 * @return
 	 */
 	@PostMapping("/status/1")
+	@CacheEvict(value = "setmealCache", allEntries = true)
 	public R<String> resellSetmealByIds(@RequestParam("ids") Long[] ids) {
 
 		List<Setmeal> list = new ArrayList<>();
@@ -218,10 +224,13 @@ public class SetmealController {
 
 	/**
 	 * 删除套餐信息和套餐关联菜品信息
+	 * @CacheEvict(value = "setmealCache", allEntries = true)
+	 * 将setmealCache套餐相关的缓存都删除
 	 * @param ids
 	 * @return
 	 */
 	@DeleteMapping
+	@CacheEvict(value = "setmealCache", allEntries = true)
 	public R<String> deleteSetmealInfo(@RequestParam("ids") List<Long> ids) {
 
 		setmealService.deleteSetmealInfo(ids);
@@ -233,10 +242,13 @@ public class SetmealController {
 
 	/**
 	 * 根据条件获取套餐信息
+	 * @Cacheable(value = "setmealCache", key = "#setmeal.categoryId + '_' + #setmeal.status")
+	 * 根据查询条件动态设置缓存的key
 	 * @param setmeal
 	 * @return
 	 */
 	@GetMapping("/list")
+	@Cacheable(value = "setmealCache", key = "#setmeal.categoryId + '_' + #setmeal.status")
 	public R<List<SetmealDTO>> getSetmealListByCategoryId(Setmeal setmeal) {
 
 		List<SetmealDTO> setmealDTOS = new ArrayList<>();
