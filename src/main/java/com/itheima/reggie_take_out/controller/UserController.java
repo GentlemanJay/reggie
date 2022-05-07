@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author xushengjie
@@ -40,6 +42,9 @@ public class UserController {
 	@Autowired
 	private TencentCloudParamConfig tcp;
 
+	@Autowired
+	private RedisTemplate redisTemplate;
+
 
 	/**
 	 * 发送登陆验证码
@@ -47,7 +52,7 @@ public class UserController {
 	 * @return
 	 */
 	@PostMapping("/sendMsg")
-	public R<String> sendCode(@RequestBody User user, HttpSession session) {
+	public R<String> sendCode(@RequestBody User user) {
 		//1.获取手机号
 		String phone = user.getPhone();
 
@@ -59,8 +64,8 @@ public class UserController {
 			//3.调用腾讯云短信SMS服务
 //			SendMsgUtil.sendMsg(phone, code, tcp.getSdkAppId(), tcp.getSignName(), tcp.getTemplateId());
 
-			//4.将生成的验证码保存到session中，用于与前端输入的验证码进行比对
-			session.setAttribute(phone, code);
+			//4.将生成的验证码保存到redis中,并设置过期时间为5分钟
+			redisTemplate.opsForValue().set(phone, code, 300, TimeUnit.SECONDS);
 
 			return R.success(UserEnum.SEND_MSG_SUCCESS.getMsg());
 		}
@@ -76,7 +81,7 @@ public class UserController {
 	 * @return
 	 */
 	@PostMapping("/login")
-	public R<User> login(@RequestBody UserDTO userDTO, HttpSession session) {
+	public R<User> login(@RequestBody UserDTO userDTO) {
 
 		//参数校验
 		if (userDTO == null || StringUtils.isBlank(userDTO.getPhone())
@@ -86,7 +91,7 @@ public class UserController {
 		}
 
 		//验证码校对
-		String backendCode = session.getAttribute(userDTO.getPhone()).toString();
+		String backendCode = redisTemplate.opsForValue().get(userDTO.getPhone()).toString();
 		if (!Objects.equals(backendCode, userDTO.getCode())) {
 			throw new InternalException(ExceptionEnum.DATA_INVALID);
 		}
@@ -106,8 +111,9 @@ public class UserController {
 			}
 		}
 
-		//登陆成功后，将用户信息存入session中，用于验证当前登陆人员信息
-		session.setAttribute("user", user.getId());
+		//登陆成功后，删除验证码信息并将用户信息存入redis中，用于验证当前登陆人员信息
+		redisTemplate.delete(userDTO.getPhone());
+		redisTemplate.opsForValue().set("user", user.getId(), 3, TimeUnit.DAYS);
 
 		return R.success(user);
 	}

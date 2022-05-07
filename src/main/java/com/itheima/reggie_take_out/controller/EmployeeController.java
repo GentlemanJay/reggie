@@ -13,10 +13,12 @@ import com.itheima.reggie_take_out.exception.InternalException;
 import com.itheima.reggie_take_out.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author xushengjie
@@ -31,6 +33,9 @@ public class EmployeeController {
 
 	@Autowired
 	private EmployeeService employeeService;
+
+	@Autowired
+	private RedisTemplate redisTemplate;
 
 
 	private static final String INIT_PASSWORD = "123456";
@@ -72,8 +77,8 @@ public class EmployeeController {
 			return R.error(LoginEnum.ACCOUNT_FORIDDEN.getMsg());
 		}
 
-		//5.登陆成功，将用户id存入session中
-		request.getSession().setAttribute("employee", emp.getId());
+		//5.登陆成功，将用户id存入redis中
+		redisTemplate.opsForValue().set("employee", emp.getId(), 3, TimeUnit.DAYS);
 
 		return R.success(emp);
 	}
