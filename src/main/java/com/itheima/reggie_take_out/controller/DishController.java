@@ -3,18 +3,18 @@ package com.itheima.reggie_take_out.controller;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.itheima.reggie_take_out.common.FileDelete;
 import com.itheima.reggie_take_out.common.R;
 import com.itheima.reggie_take_out.dto.DishDTO;
 import com.itheima.reggie_take_out.entity.Category;
 import com.itheima.reggie_take_out.entity.Dish;
 import com.itheima.reggie_take_out.entity.DishFlavor;
 import com.itheima.reggie_take_out.enums.DishEnum;
-import com.itheima.reggie_take_out.enums.ExceptionEnum;
-import com.itheima.reggie_take_out.exception.InternalException;
 import com.itheima.reggie_take_out.service.CategoryService;
 import com.itheima.reggie_take_out.service.DishFlavorService;
 import com.itheima.reggie_take_out.service.DishService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -37,6 +37,7 @@ import java.util.stream.Collectors;
 @RestController
 @Slf4j
 @RequestMapping("/dish")
+@Api(tags = "菜品信息相关api接口")
 public class DishController {
 
 	@Autowired
@@ -61,6 +62,7 @@ public class DishController {
 	 * @return
 	 */
 	@PostMapping
+	@ApiOperation("新增菜品")
 	public R<String> saveDishInfo(@RequestBody DishDTO dishDTO) {
 
 		dishService.saveDishWithFlavors(dishDTO);
@@ -80,6 +82,7 @@ public class DishController {
 	 * @return
 	 */
 	@PutMapping
+	@ApiOperation("修改菜品")
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public R<String> updateDishInfo(@RequestBody DishDTO dishDTO) {
 
@@ -118,8 +121,9 @@ public class DishController {
 	 * @param id
 	 * @return
 	 */
+	@ApiOperation("根据菜品id获取菜品信息")
 	@GetMapping("/{id}")
-	public R<DishDTO> getDishInfoById(@PathVariable Long id) {
+	public R<DishDTO> getDishInfoById(@PathVariable @ApiParam("菜品id") Long id) {
 		DishDTO dishDTO = new DishDTO();
 
 		//菜品信息
@@ -143,6 +147,7 @@ public class DishController {
 	 * @param pageSize
 	 * @return
 	 */
+	@ApiOperation("分页显示菜品管理数据")
 	@GetMapping("/page")
 	public R<Page<DishDTO>> page(Integer page, Integer pageSize, String name) {
 
@@ -188,6 +193,7 @@ public class DishController {
 	 * @param ids
 	 * @return
 	 */
+	@ApiOperation("批量停售菜品")
 	@PostMapping("/status/0")
 	public R<String> soldDishByIds(@RequestParam("ids") List<Long> ids) {
 
@@ -221,6 +227,7 @@ public class DishController {
 	 * @param ids
 	 * @return
 	 */
+	@ApiOperation("批量启售菜品")
 	@PostMapping("/status/1")
 	public R<String> resellDishByIds(@RequestParam("ids") List<Long> ids) {
 
@@ -253,6 +260,7 @@ public class DishController {
 	 * @param ids
 	 * @return
 	 */
+	@ApiOperation("批量删除菜品")
 	@DeleteMapping
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public R<String> removeDishByIds(@RequestParam("ids") List<Long> ids) {
@@ -278,6 +286,7 @@ public class DishController {
 	 * @param dish
 	 * @return
 	 */
+	@ApiOperation("根据条件获取菜品信息")
 	@GetMapping("/list")
 	public R<List<DishDTO>> getDishListByCategoryId(Dish dish) {
 

@@ -24,6 +24,11 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		log.info("===开始进行静态资源映射");
 		registry.addResourceHandler("/backend/**").addResourceLocations("classpath:/backend/");
 		registry.addResourceHandler("/front/**").addResourceLocations("classpath:/front/");
+
+		//swagger-ui静态页面映射
+		registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
+		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+
 	}
 
 	/**
