@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 工程简介
 传智播客黑马程序员-reggie外卖平台项目
 
@@ -12,34 +11,26 @@ reggie外卖平台
 
 #### 软件架构
 软件架构说明
-
-
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.Spring-boot
+2.Mybatis_plus
+3.Spring-cache
+4.redis
+5.fastjson
+6.hutool
+7.knife4j
+8.lombok
+9.tencentcloud
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+一.配置文件
+1.配置mysql和redis
+2.配置mybatis_plus
+3.配置图片上传下载的路径
 
-#### 参与贡献
+二.
+1.购买腾讯云，阿里云等云服务的SMS短信服务，用户短信验证码登陆
+2.如果用于个人测试，建议申请腾讯云，可以每月免费发送100条短信
+3.申请成功后，设置短信签名和短信模板,待腾讯审核
+4.在配置文件中配置腾讯云secretId,secretKey等参数
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
->>>>>>> 43fa59d22ab41d6bcc00b04b837ff085641552e9
