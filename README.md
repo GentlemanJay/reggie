@@ -8,9 +8,11 @@
 
 #### 介绍
 reggie外卖平台
+1.使用ThreadLocal存取当前登陆的用户信息
+2.AtomicInteger计算订单总金额
 
 #### 软件架构
-软件架构说明
+技术栈
 1.Spring-boot
 2.Mybatis_plus
 3.Spring-cache
